@@ -53,7 +53,20 @@ Spanish version
 ```{r plot, fig.width = 8, fig.height = 6}
 
 sp_data <- data %>%
-  mutate(region_name = ifelse(region_name == "Global average", "Promedio global", "México"))
+  mutate(region_name = ifelse(region_name == "Global average", "Promedio global", "México")) %>%
+  mutate(long_goal = case_when(
+    long_goal == "Overall" ~ "General",
+    long_goal == "Artisanal opportunities" ~ "Oportunidad de pesca artesenal",
+    long_goal == "Biodiversity" ~ "Bioversidad",
+    long_goal == "Carbon storage" ~ "Almacenamiento de carbono",
+    long_goal == "Clean water" ~ "Aguas limpias",
+    long_goal == "Coastal protection" ~ "Protección costera",
+    long_goal == "Food provision" ~ "Provisión de alimentos",
+    long_goal == "Livelihoods & economies" ~ "Subsistencia y economías",
+    long_goal == "Natural products" ~ "Productos naturales",
+    long_goal == "Sense of place" ~ "Identidad cultural",
+    long_goal == "Tourism & recreation" ~ "Turismo y recreación"
+  ))
 
 ggplot(sp_data, aes(x = long_goal, y = value, color = year, shape = region_name)) +
   geom_point(cex = 4) +

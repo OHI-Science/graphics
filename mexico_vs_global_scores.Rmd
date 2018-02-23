@@ -33,7 +33,8 @@ ggplot(data, aes(x = long_goal, y = value, color = year, shape = region_name)) +
         axis.text.y = element_text(color = "white"),
         legend.text = element_text(color = "white"),
         legend.title=element_blank(),
-        rect = element_rect(fill = "transparent")) + # bg of the panel
+        panel.background = element_rect(fill = "transparent",colour = NA),
+        plot.background = element_rect(fill = "transparent",colour = NA)) + # bg of the panel
   scale_x_discrete(limits=c("Overall", "Artisanal opportunities", "Biodiversity", 
                             "Carbon storage", "Clean water", "Coastal protection", 
                             "Food provision", "Livelihoods & economies", "Natural products", 

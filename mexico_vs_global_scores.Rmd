@@ -52,28 +52,31 @@ Spanish version
 
 ```{r plot, fig.width = 8, fig.height = 6}
 
-ggplot(data, aes(x = long_goal, y = value, color = year, shape = region_name)) +
+sp_data <- data %>%
+  mutate(region_name = ifelse(region_name == "Global average", "Promedio global", "México"))
+
+ggplot(sp_data, aes(x = long_goal, y = value, color = year, shape = region_name)) +
   geom_point(cex = 4) +
-  ylab("SCORES") +
+  ylab("Valores de las metas") +
   xlab("") +
   theme_bw() +
   theme(axis.text.x = element_text(face="bold", size=10, angle=45, vjust = 1, hjust = 1, color = "white"),
         axis.title.y = element_text(face = "bold", color = "white"),
-        axis.text.y = element_text(color = "white"),
-        legend.text = element_text(color = "white"),
+        axis.text.y = element_text(color = "white", size = 10, face = "bold"),
+        legend.text = element_text(color = "white", face = "bold", size = 11),
         legend.title=element_blank(), 
         panel.background = element_rect(fill = "transparent"), # bg of the panel
         plot.background = element_rect(fill = "transparent"), # bg of the plot
         panel.grid.minor = element_blank(), # get rid of minor grid
         legend.background = element_rect(fill = "transparent")) + # get rid of legend bg
-  scale_x_discrete(limits=c("Overall", "Artisanal opportunities", "Biodiversity", 
-                            "Carbon storage", "Clean water", "Coastal protection", 
-                            "Food provision", "Livelihoods & economies", "Natural products", 
-                            "Sense of place", "Tourism & recreation")) +
+  scale_x_discrete(limits=c("General", "Oportunidad de pesca artesenal", "Bioversidad", 
+                            "Almacenamiento de carbono", "Aguas limpias", "Protección costera", 
+                            "Provisión de alimentos", "Subsistencia y economías", "Productos naturales", 
+                            "Identidad cultural", "Turismo y recreación")) +
   scale_color_brewer(name = "", palette = "Blues") +
   scale_y_continuous(breaks = seq(0, 100, 10))
 
-ggsave("figs/mexico_global_scores.pdf", width = 8, height = 6)
+ggsave("figs/mexico_global_scores_spanish.pdf", width = 8, height = 6)
 
 ```
 

@@ -1,0 +1,50 @@
+---
+title: "Mexico vs Global scores"
+author: "Jamie Afflerbach"
+date: "2/23/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+```{r data}
+
+data <- read_csv("data/OHI_final_formatted_scores_2017-11-22.csv") %>%
+  filter(region_name %in% c("Global average", "Mexico"),    #filter for only the global and mexico scores
+         dimension == "score",
+         !str_detect(long_goal, "subgoal"), #remove all rows where subgoal is in the name
+         !long_goal %in% c("Livelihoods", "Economies")) %>% 
+  mutate(year = as.character(scenario), #forcing years to be characters so they aren't plotted as continuous values
+         long_goal = ifelse(long_goal == "Index", "Overall", long_goal)) 
+
+```
+
+```{r plot, fig.width = 8, fig.height = 6}
+
+ggplot(data, aes(x = long_goal, y = value, color = year, shape = region_name)) +
+  geom_point(cex = 4) +
+  ylab("SCORES") +
+  xlab("") +
+  theme_bw() +
+  theme(axis.text.x = element_text(face="bold", size=10, angle=45, vjust = 1, hjust = 1, color = "white"),
+        axis.title.y = element_text(face = "bold", color = "white"),
+        axis.text.y = element_text(color = "white"),
+        legend.text = element_text(color = "white"),
+        legend.title=element_blank(),
+        rect = element_rect(fill = "transparent")) + # bg of the panel
+  scale_x_discrete(limits=c("Overall", "Artisanal opportunities", "Biodiversity", 
+                            "Carbon storage", "Clean water", "Coastal protection", 
+                            "Food provision", "Livelihoods & economies", "Natural products", 
+                            "Sense of place", "Tourism & recreation")) +
+  scale_color_brewer(name = "", palette = "Blues") +
+  scale_y_continuous(breaks = seq(0, 100, 10))
+
+ggsave("figs/mexico_global_scores.png", width = 8, height = 6)
+
+```
+
+
+
+
